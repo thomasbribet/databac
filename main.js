@@ -1,23 +1,35 @@
-import './style.css'
-import javascriptLogo from './javascript.svg'
-import { setupCounter } from './counter.js'
+import localforage from "localforage";
+import { addCigaret } from "./smokeFunctions";
+import { updateRecordData, getRecordData } from "./recordFunctions";
 
-document.querySelector('#app').innerHTML = `
-  <div>
-    <a href="https://vitejs.dev" target="_blank">
-      <img src="/vite.svg" class="logo" alt="Vite logo" />
-    </a>
-    <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript" target="_blank">
-      <img src="${javascriptLogo}" class="logo vanilla" alt="JavaScript logo" />
-    </a>
-    <h1>Hello Vite!</h1>
-    <div class="card">
-      <button id="counter" type="button"></button>
-    </div>
-    <p class="read-the-docs">
-      Click on the Vite logo to learn more
-    </p>
-  </div>
-`
+localforage.config({
+  driver: [localforage.INDEXEDDB],
+  name: "databac",
+  storeName: "tabacData",
+});
 
-setupCounter(document.querySelector('#counter'))
+// const filterHour = () => {
+//   let today = new Date().toLocaleDateString();
+//   localforage.getItem(today).then((todayHoursSmoke) => {
+//     let whenSmoking = new Date();
+//     let nbrCigThisHour = todayHoursSmoke.filter((hour) => {
+//       return hour.getHours() === whenSmoking.getHours();
+//     }).length;
+//     // console.log(nbrCigThisHour);
+//   });
+// };
+const btn = document.getElementById("btn");
+
+window.addEventListener("load", () => {
+  getRecordData();
+});
+
+btn.addEventListener("click", () => {
+  addCigaret();
+  setTimeout(() => {
+    updateRecordData();
+    setTimeout(() => {
+      getRecordData();
+    }, 100);
+  }, 100);
+});
