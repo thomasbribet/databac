@@ -1,36 +1,29 @@
 import localforage from "localforage";
 
 const updateRecordData = () => {
-  let lastCigaret = localStorage.getItem("lastCigaret");
-  let record = localStorage.getItem("record");
+  let lastCigaret = localStorage.getItem("lastCigaret")
   let newCigaret = new Date().getTime();
+  let timeBtwCigarets = parseInt(newCigaret) - parseInt(lastCigaret);
+  console.log("diff", timeBtwCigarets);
+  localforage.getItem("recordData").then((data) => {
+    if(timeBtwCigarets > data.record) {
+      localforage.setItem("recordData",)
+    }
 
-  let timeDifference = newCigaret - lastCigaret;
-
-  if (timeDifference > record) {
-    localforage.setItem("noSmokeRecord", {
-      lastCigaret: newCigaret,
-      record: timeDifference,
-    });
-  } else {
-    localforage.setItem("noSmokeRecord", {
-      lastCigaret: newCigaret,
-      record: record,
-    });
-  }
+  })
 };
 
 const getRecordData = () => {
-  localforage.getItem("noSmokeRecord").then((details) => {
-    if (!details) {
-      localforage.setItem("noSmokeRecord", {
-        lastCigaret: "",
-        record: "",
+  localforage.getItem("recordData").then((data) => {
+    if (!data) {
+      localforage.setItem("recordData", {
+        lastCigaret: 0,
+        record: 0,
       });
       getRecordData();
     } else {
-      localStorage.setItem("lastCigaret", details.lastCigaret);
-      localStorage.setItem("record", details.record);
+      localStorage.setItem("lastCigaret", data.lastCigaret);
+      localStorage.setItem("record", data.record);
     }
   });
 };
