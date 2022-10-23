@@ -37,7 +37,7 @@ const getLastCigaret = (today) => {
         localStorage.setItem("lastCigaret", lastCigaret);
         return;
       } else if (todayCigarets.length > 1) {
-        // If already smoke , get the last one from today
+        // If already smoke today, get the last one from today
         lastCigaret = todayCigarets[todayCigarets.length - 2];
         localStorage.setItem("lastCigaret", lastCigaret);
         return;

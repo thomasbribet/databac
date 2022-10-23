@@ -4,13 +4,27 @@ const updateRecordData = () => {
   let lastCigaret = localStorage.getItem("lastCigaret");
   let newCigaret = new Date().getTime();
   let timeBtwCigarets = parseInt(newCigaret) - parseInt(lastCigaret);
-  console.log("diff", timeBtwCigarets);
-  console.log("last", lastCigaret);
-  console.log("new", newCigaret);
   localforage.getItem("recordData").then((data) => {
+    if (!data.totalSmokedCigarets) {
+      localforage.setItem("recordData", {
+        lastCigaret: parseInt(newCigaret),
+        record: parseInt(newCigaret),
+        totalSmokedCigarets: 1,
+      });
+      return;
+    }
+    if (data.totalSmokedCigarets === 1) {
+      localforage.setItem("recordData", {
+        lastCigaret: parseInt(newCigaret),
+        record: timeBtwCigarets,
+        totalSmokedCigarets: data.totalSmokedCigarets + 1,
+      });
+      return;
+    }
     localforage.setItem("recordData", {
       lastCigaret: parseInt(newCigaret),
       record: timeBtwCigarets > data.record ? timeBtwCigarets : data.record,
+      totalSmokedCigarets: data.totalSmokedCigarets + 1,
     });
   });
 };
