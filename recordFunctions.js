@@ -25,6 +25,7 @@ const updateRecordData = () => {
       lastCigaret: parseInt(newCigaret),
       record: timeBtwCigarets > data.record ? timeBtwCigarets : data.record,
       totalSmokedCigarets: data.totalSmokedCigarets + 1,
+      isNewRecord: timeBtwCigarets > data.record ? true : false,
     });
   });
 };
@@ -40,8 +41,20 @@ const getRecordData = () => {
     } else {
       localStorage.setItem("lastCigaret", data.lastCigaret);
       localStorage.setItem("record", data.record);
+      localStorage.setItem("totalSmokedCigarets", data.totalSmokedCigarets);
     }
   });
 };
 
-export { updateRecordData, getRecordData };
+const checkNewRecord = () => {
+  setInterval(() => {
+    let now = new Date().getTime()
+    let lastCigaret = localStorage.getItem("lastCigaret")
+    let timeBtwCigarets = parseInt(now) - parseInt(lastCigaret)
+
+    let record = localStorage.getItem("record")
+    let timeToNewRecord = parseInt(record) - timeBtwCigarets
+  }, 1000)
+}
+
+export { updateRecordData, getRecordData, checkNewRecord };

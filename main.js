@@ -1,27 +1,21 @@
 import localforage from "localforage";
 import { addCigaret } from "./smokeFunctions";
-import { updateRecordData, getRecordData } from "./recordFunctions";
+import {
+  updateRecordData,
+  getRecordData,
+  checkNewRecord,
+} from "./recordFunctions";
 
 localforage.config({
   driver: [localforage.INDEXEDDB],
   name: "databac",
   storeName: "tabacData",
 });
-
-// const filterHour = () => {
-//   let today = new Date().toLocaleDateString();
-//   localforage.getItem(today).then((todayHoursSmoke) => {
-//     let whenSmoking = new Date();
-//     let nbrCigThisHour = todayHoursSmoke.filter((hour) => {
-//       return hour.getHours() === whenSmoking.getHours();
-//     }).length;
-//     // console.log(nbrCigThisHour);
-//   });
-// };
 const btn = document.getElementById("btn");
 
 window.addEventListener("load", () => {
   getRecordData();
+  checkNewRecord();
 });
 
 btn.addEventListener("click", () => {
