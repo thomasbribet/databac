@@ -67,12 +67,18 @@ const displayTime = (timeInMs, htmlId) => {
   timeInMs -= hours * (60 * 60 * 1000);
   let minutes = Math.floor(timeInMs / (60 * 1000));
 
-  document.querySelector(`#${htmlId} .timeDisplay .days`).innerHTML =
-    days + ` ${days > 1 ? "jours" : "jour"}`;
-  document.querySelector(`#${htmlId} .timeDisplay .hours`).innerHTML =
-    hours + " h";
-  document.querySelector(`#${htmlId} .timeDisplay .minutes`).innerHTML =
-    minutes + " min";
+  if (days > 0) {
+    document.querySelector(`#${htmlId} .timeDisplay .days`).innerHTML =
+      days + ` ${days > 1 ? "jours" : "jour"}`;
+  }
+  if (hours > 0) {
+    document.querySelector(`#${htmlId} .timeDisplay .hours`).innerHTML =
+      hours + " h";
+  }
+  if (minutes > 0) {
+    document.querySelector(`#${htmlId} .timeDisplay .minutes`).innerHTML =
+      minutes + " min";
+  }
 };
 
 export { updateRecordData, getRecordData, checkNewRecord };
