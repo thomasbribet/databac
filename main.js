@@ -11,14 +11,18 @@ localforage.config({
   name: "databac",
   storeName: "tabacData",
 });
-const btn = document.getElementById("btn");
 
 window.addEventListener("load", () => {
   getRecordData();
   checkNewRecord();
 });
 
-btn.addEventListener("click", () => {
+document.getElementById("totalSmokedCigarets").innerHTML = localStorage.getItem(
+  "totalSmokedCigarets"
+);
+
+const smokeBtn = document.getElementById("smokeBtn");
+smokeBtn.addEventListener("click", () => {
   addCigaret();
   setTimeout(() => {
     updateRecordData();

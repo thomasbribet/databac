@@ -47,14 +47,32 @@ const getRecordData = () => {
 };
 
 const checkNewRecord = () => {
+  let record = localStorage.getItem("record");
   setInterval(() => {
-    let now = new Date().getTime()
-    let lastCigaret = localStorage.getItem("lastCigaret")
-    let timeBtwCigarets = parseInt(now) - parseInt(lastCigaret)
+    let now = new Date().getTime();
+    let lastCigaret = localStorage.getItem("lastCigaret");
+    let timeBtwCigarets = parseInt(now) - parseInt(lastCigaret);
 
-    let record = localStorage.getItem("record")
-    let timeToNewRecord = parseInt(record) - timeBtwCigarets
-  }, 1000)
-}
+    let timeToNewRecord = parseInt(record) - timeBtwCigarets;
+
+    displayTime(timeToNewRecord, "timeToNewRecord");
+  }, 1000);
+  displayTime(record, "record");
+};
+
+const displayTime = (timeInMs, htmlId) => {
+  let days = Math.floor(timeInMs / (86400 * 1000));
+  timeInMs -= days * (86400 * 1000);
+  let hours = Math.floor(timeInMs / (60 * 60 * 1000));
+  timeInMs -= hours * (60 * 60 * 1000);
+  let minutes = Math.floor(timeInMs / (60 * 1000));
+
+  document.querySelector(`#${htmlId} .timeDisplay .days`).innerHTML =
+    days + ` ${days > 1 ? "jours" : "jour"}`;
+  document.querySelector(`#${htmlId} .timeDisplay .hours`).innerHTML =
+    hours + " h";
+  document.querySelector(`#${htmlId} .timeDisplay .minutes`).innerHTML =
+    minutes + " min";
+};
 
 export { updateRecordData, getRecordData, checkNewRecord };

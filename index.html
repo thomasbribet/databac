@@ -3,10 +3,38 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="stylesheet" href="./userHome.css" />
     <script type="module" src="/main.js"></script>
     <title>Databac</title>
   </head>
   <body>
-      <button id="btn">je fume</button>
+    <div id="home">
+      <div class="homeDiv">
+        <button id="smokeBtn">&#128684;</button>
+      </div>
+      <div class="homeDiv">
+        <p>&#128128; Total cigarettes fumées: <span id="totalSmokedCigarets"></span></p>
+        <div id="record">
+          <p>&#127942; Record sans fumer</span></p>
+          <div class="timeDisplay">
+              <div class="days"></div>
+              <div class="hours"></div>
+              <div class="minutes"></div>
+          </div>
+        </div>
+        <div id="timeToNewRecord">
+          <p>&#8987; Record battu dans</span></p>
+          <div class="timeDisplay">
+              <div class="days"></div>
+              <div class="hours"></div>
+              <div class="minutes"></div>
+          </div>
+        </div>
+        <!-- <p class="birdLevel">&#128035;</p>
+        <p class="birdLevel">&#128036;</p>
+        <p class="birdLevel">&#128037;</p>
+        <p class="birdLevel">&#128038;</p> -->
+      </div>
+    </div>
   </body>
 </html>

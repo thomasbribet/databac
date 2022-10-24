@@ -1,0 +1,28 @@
+* {
+    margin: 0;
+    padding: 0;
+}
+
+.homeDiv {
+    background-color: lightblue;
+    border: 1px solid black;
+    height: 50vh;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+#smokeBtn {
+    border-radius: 100%;
+    height: 70vw;
+    width: 70vw;
+    font-size: 4em;
+}
+
+.birdLevel {
+    font-size: 2em;
+}
+
+.timeDisplay, .timeDisplay:nth-child() {
+    display: flex;
+}
