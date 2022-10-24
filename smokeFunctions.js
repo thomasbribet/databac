@@ -21,12 +21,8 @@ let addCigaret = () => {
 
 const getLastCigaret = (today) => {
   let lastCigaret;
-  let date = new Date();
-  let yesterday = new Date(
-    date.getFullYear(),
-    date.getMonth(),
-    date.getDate() - 1
-  ).toLocaleString("fr-FR", { dateStyle: "full" });
+  let { dayFromPast } = getDateStringFromPast(1);
+  let yesterday = dayFromPast;
 
   // 3 contexts to retrieve the last cigaret smoked:
   localforage.keys().then((keys) => {
@@ -52,4 +48,37 @@ const getLastCigaret = (today) => {
   });
 };
 
-export { addCigaret };
+const getDateStringFromPast = (nbrOfDaysFromNow) => {
+  let date = new Date();
+  let today = date.toLocaleString("fr-FR", { dateStyle: "full" });
+  let dayFromPast = new Date(
+    date.getFullYear(),
+    date.getMonth(),
+    date.getDate() - nbrOfDaysFromNow
+  ).toLocaleString("fr-FR", { dateStyle: "full" });
+  return { today, dayFromPast };
+};
+
+const getNbrCigaretsOfToday = () => {
+  let { today } = getDateStringFromPast(0);
+  localforage.getItem(today).then((nbCigaretsToday) => {
+    if (nbCigaretsToday) {
+      localStorage.setItem("nbrCigaretsToday", nbCigaretsToday.length);
+    } else {
+      localStorage.setItem("nbrCigaretsToday", 0);
+    }
+  });
+};
+
+const getNbrCigaretsFromPast = (nbrOfDaysFromNow) => {
+  let { dayFromPast } = getDateStringFromPast(nbrOfDaysFromNow);
+  localforage.getItem(dayFromPast).then((nbrCigaretsDayInPast) => {
+    if (nbrCigaretsDayInPast) {
+      localStorage.setItem("nbrCigaretsLastWeek", nbrCigaretsDayInPast.length);
+    } else {
+      localStorage.setItem(`nbrCigaretsLastWeek`, "?");
+    }
+  });
+};
+
+export { addCigaret, getNbrCigaretsFromPast, getNbrCigaretsOfToday };
