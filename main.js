@@ -4,11 +4,7 @@ import {
   getNbrCigaretsFromPast,
   getNbrCigaretsOfToday,
 } from "./smokeFunctions";
-import {
-  updateRecordData,
-  getRecordData,
-  checkNewRecord,
-} from "./recordFunctions";
+import { getRecordData, checkNewRecord } from "./recordFunctions";
 
 localforage.config({
   driver: [localforage.INDEXEDDB],
@@ -21,13 +17,13 @@ window.addEventListener("load", () => {
   checkNewRecord();
   getNbrCigaretsFromPast(7);
   setTimeout(() => {
-    document.getElementById("totalSmokedCigarets").innerHTML =
-      localStorage.getItem("totalSmokedCigarets");
     displayDailyStats();
   }, 500);
 });
 
 const displayDailyStats = () => {
+  document.getElementById("totalSmokedCigarets").innerHTML =
+    localStorage.getItem("totalSmokedCigarets");
   document.getElementById("dailyStatsToday").innerHTML =
     localStorage.getItem("nbrCigaretsToday");
   document.getElementById("dailyStatsLastWeek").innerHTML =
@@ -35,18 +31,14 @@ const displayDailyStats = () => {
 };
 
 const smokeBtn = document.getElementById("smokeBtn");
+
 smokeBtn.addEventListener("click", () => {
   addCigaret();
   setTimeout(() => {
-    updateRecordData();
+    getRecordData();
+    getNbrCigaretsOfToday();
     setTimeout(() => {
-      getRecordData();
-      getNbrCigaretsOfToday()
-      setTimeout(() => {
-        document.getElementById("totalSmokedCigarets").innerHTML =
-          localStorage.getItem("totalSmokedCigarets");
-        displayDailyStats();
-      }, 500);
-    }, 100);
+      displayDailyStats();
+    }, 500);
   }, 100);
 });

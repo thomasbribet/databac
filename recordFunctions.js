@@ -1,8 +1,7 @@
 import localforage from "localforage";
 
-const updateRecordData = () => {
+const updateRecordData = (newCigaret) => {
   let lastCigaret = localStorage.getItem("lastCigaret");
-  let newCigaret = new Date().getTime();
   let timeBtwCigarets = parseInt(newCigaret) - parseInt(lastCigaret);
   localforage.getItem("recordData").then((data) => {
     if (!data.totalSmokedCigarets) {
@@ -48,13 +47,23 @@ const getRecordData = () => {
 
 const checkNewRecord = () => {
   let record = localStorage.getItem("record");
+  document.getElementById("smokeBtn").disabled = true
   setInterval(() => {
     let now = new Date().getTime();
     let lastCigaret = localStorage.getItem("lastCigaret");
-    let timeBtwCigarets = parseInt(now) - parseInt(lastCigaret);
 
+    let timeBtwCigarets = parseInt(now) - parseInt(lastCigaret);
     let timeToNewRecord = parseInt(record) - timeBtwCigarets;
 
+    let isSmoking = localStorage.getItem("isSmoking");
+    if (isSmoking === "true") {
+      localStorage.setItem(
+        "isSmoking",
+        now > parseInt(lastCigaret) + 10000 ? false : true
+      );
+    } else {
+      document.getElementById("smokeBtn").disabled = false
+    }
     displayTime(timeToNewRecord, "timeToNewRecord");
   }, 1000);
   displayTime(record, "record");

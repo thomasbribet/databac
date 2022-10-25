@@ -1,22 +1,31 @@
 import localforage from "localforage";
+import { updateRecordData } from "./recordFunctions";
 
 let addCigaret = () => {
-  let today = new Date().toLocaleString("fr-FR", { dateStyle: "full" });
-  localforage
-    .getItem(today)
-    .then((todayCigarets) => {
-      if (!todayCigarets) {
-        localforage.setItem(today, []);
-        addCigaret();
-      } else {
-        let now = new Date().getTime();
-        todayCigarets.push(now);
-        localforage.setItem(today, todayCigarets);
-      }
-    })
-    .then(() => {
-      getLastCigaret(today);
-    });
+  if (localStorage.getItem("isSmoking") !== "true") {
+    let date = new Date();
+    let today = date.toLocaleString("fr-FR", { dateStyle: "full" });
+    let now = date.getTime();
+    localforage
+      .getItem(today)
+      .then((todayCigarets) => {
+        if (!todayCigarets) {
+          localforage.setItem(today, []);
+          addCigaret();
+        } else {
+          todayCigarets.push(now);
+          localforage.setItem(today, todayCigarets);
+          localStorage.setItem("isSmoking", true);
+          document.getElementById("smokeBtn").disabled = true
+        }
+      })
+      .then(() => {
+        getLastCigaret(today);
+      })
+      .then(() => {
+        updateRecordData(now);
+      });
+  }
 };
 
 const getLastCigaret = (today) => {
