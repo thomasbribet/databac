@@ -28,14 +28,25 @@ let addCigaret = () => {
   }
 };
 
-const getLastCigaret = (today) => {
+const checkIfSmoking = (isSmoking, now, lastCigaret, cigaretBreakInMs) => {
+  if (isSmoking === "true") {
+    localStorage.setItem(
+      "isSmoking",
+      now > parseInt(lastCigaret) + cigaretBreakInMs ? false : true
+    );
+  } else {
+    document.getElementById("smokeBtn").disabled = false;
+  }
+};
+
+const getLastCigaret = (fromWhen) => {
   let lastCigaret;
   let { dayFromPast } = getDateStringFromPast(1);
   let yesterday = dayFromPast;
 
   // 3 contexts to retrieve the last cigaret smoked:
   localforage.keys().then((keys) => {
-    localforage.getItem(today).then((todayCigarets) => {
+    localforage.getItem(fromWhen).then((todayCigarets) => {
       if (todayCigarets.length === 1 && keys.length < 3) {
         // If first cigaret ever, no last cigaret yet => assigning value 0
         lastCigaret = 0;
@@ -85,9 +96,9 @@ const getNbrCigaretsFromPast = (nbrOfDaysFromNow) => {
     if (nbrCigaretsDayInPast) {
       localStorage.setItem("nbrCigaretsLastWeek", nbrCigaretsDayInPast.length);
     } else {
-      localStorage.setItem(`nbrCigaretsLastWeek`, "?");
+      localStorage.setItem(`nbrCigaretsLastWeek`, "-");
     }
   });
 };
 
-export { addCigaret, getNbrCigaretsFromPast, getNbrCigaretsOfToday };
+export { addCigaret, getNbrCigaretsFromPast, getNbrCigaretsOfToday, checkIfSmoking };
